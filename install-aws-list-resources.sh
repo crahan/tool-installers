@@ -2,13 +2,13 @@
 set -euo pipefail
 
 APP_NAME="aws-list-resources"
-REPO_URL="https://github.com/welldone-cloud/aws-list-resources.git"
+REPO="welldone-cloud/aws-list-resources"
 
 OPT_DIR="${1:-${HOME}/.local/opt}"
 BIN_DIR="${2:-${HOME}/.local/bin}"
 CLONE_PATH="${OPT_DIR}/aws-list-resources"
 
-echo "Installing ${APP_NAME}..."
+echo "Installing ${APP_NAME} from ${REPO}..."
 
 # Create install directories if they don't exist
 mkdir -p "${OPT_DIR}" "${BIN_DIR}"
@@ -18,8 +18,8 @@ if [ -d "${CLONE_PATH}/.git" ]; then
     echo "Repository already cloned. Updating..."
     git -C "${CLONE_PATH}" pull --ff-only
 else
-    echo "Cloning ${REPO_URL} to ${CLONE_PATH}..."
-    git clone "${REPO_URL}" "${CLONE_PATH}"
+    echo "Cloning ${REPO} to ${CLONE_PATH}..."
+    git clone "https://github.com/${REPO}.git" "${CLONE_PATH}"
 fi
 
 # Create wrapper script to run via uv
@@ -35,4 +35,4 @@ exec uv run \\
 WRAPPER
 chmod +x "${BIN_DIR}/${APP_NAME}"
 
-echo "${APP_NAME} installed successfully."
+echo "aws-list-resources installed to ${BIN_DIR}/${APP_NAME}"

@@ -62,4 +62,3 @@ rm -f "${TMPFILE}"
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
 echo "AzureHound ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
-"${INSTALL_DIR}/${APP_NAME}" --version

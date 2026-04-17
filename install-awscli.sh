@@ -40,6 +40,3 @@ fi
 rm -rf "${TMPDIR}"
 
 echo "AWS CLI installed to ${INSTALL_DIR}/${APP_NAME}"
-if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
-    "${INSTALL_DIR}/${APP_NAME}" --version
-fi

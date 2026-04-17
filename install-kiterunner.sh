@@ -61,4 +61,3 @@ curl -fsSL "${DOWNLOAD_URL}" | tar -xz -C "${INSTALL_DIR}" "${APP_NAME}"
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
 echo "Kiterunner ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
-"${INSTALL_DIR}/${APP_NAME}" version

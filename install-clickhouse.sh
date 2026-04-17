@@ -48,4 +48,3 @@ curl -fsSL "${DOWNLOAD_URL}" -o "${INSTALL_DIR}/${APP_NAME}"
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
 echo "ClickHouse installed to ${INSTALL_DIR}/${APP_NAME}"
-"${INSTALL_DIR}/${APP_NAME}" --version

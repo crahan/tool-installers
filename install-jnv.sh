@@ -62,4 +62,3 @@ rm -rf "${TMPDIR}"
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
 echo "jnv ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
-"${INSTALL_DIR}/${APP_NAME}" --version

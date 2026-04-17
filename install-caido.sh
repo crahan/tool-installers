@@ -68,4 +68,3 @@ fi
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
 echo "Caido CLI ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
-"${INSTALL_DIR}/${APP_NAME}" --version
