@@ -61,7 +61,7 @@ rm -f "${TMPFILE}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
-# Create bunx symlink pointing to the bun binary
+# Create bunx symlink to the bun binary
 ln -sf "${APP_NAME}" "${INSTALL_DIR}/bunx"
 
 echo "bun ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME} (with bunx symlink)"
