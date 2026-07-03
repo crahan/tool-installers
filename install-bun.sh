@@ -56,7 +56,7 @@ fi
 # Download and extract bun binary directly to install directory
 TMPFILE="$(mktemp)"
 curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-unzip -o -j "${TMPFILE}" "bun-${TARGET}/${APP_NAME}" -d "${INSTALL_DIR}"
+unzip -o -j -q "${TMPFILE}" "bun-${TARGET}/${APP_NAME}" -d "${INSTALL_DIR}"
 rm -f "${TMPFILE}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"

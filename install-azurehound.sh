@@ -56,7 +56,7 @@ fi
 # Download and extract azurehound binary directly to install directory
 TMPFILE="$(mktemp)"
 curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-unzip -o -j "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
+unzip -o -j -q "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
 rm -f "${TMPFILE}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"

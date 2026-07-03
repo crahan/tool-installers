@@ -61,7 +61,7 @@ if [ "${EXT}" = "tar.gz" ]; then
 else
     TMPFILE="$(mktemp)"
     curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-    unzip -o -j "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
+    unzip -o -j -q "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
     rm -f "${TMPFILE}"
 fi
 
