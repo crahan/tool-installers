@@ -38,7 +38,7 @@ fi
 
 echo "Latest version: ${LATEST_TAG}"
 
-# Strip the leading 'v' for the filename
+# Strip the leading 'v' from the tag string
 VERSION="${LATEST_TAG#v}"
 
 # Construct download URL

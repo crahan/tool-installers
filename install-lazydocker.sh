@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="kr"
-REPO="assetnote/kiterunner"
+APP_NAME="lazydocker"
+REPO="jesseduffield/lazydocker"
 INSTALL_DIR="${1:-${HOME}/.local/bin}"
 
 OS="$(uname -s)"
@@ -11,21 +11,22 @@ ARCH="$(uname -m)"
 case "${OS}" in
   Linux)
     case "${ARCH}" in
-      x86_64)  PLATFORM="linux_amd64" ;;
-      aarch64) PLATFORM="linux_arm64" ;;
+      x86_64)  PLATFORM="Linux_x86_64" ;;
+      aarch64) PLATFORM="Linux_arm64" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
   Darwin)
     case "${ARCH}" in
-      x86_64|arm64) PLATFORM="darwin_amd64" ;;
+      x86_64)  PLATFORM="Darwin_x86_64" ;;
+      arm64)   PLATFORM="Darwin_arm64" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
   *) echo "Unsupported OS: ${OS}" >&2; exit 1 ;;
 esac
 
-echo "Installing Kiterunner from ${REPO}..."
+echo "Installing lazydocker from ${REPO}..."
 
 # Get the latest release tag from GitHub API
 LATEST_TAG=$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" | grep -o '"tag_name": *"[^"]*"' | head -1 | sed 's/.*: *"\([^"]*\)".*/\1/')
@@ -41,7 +42,7 @@ echo "Latest version: ${LATEST_TAG}"
 VERSION="${LATEST_TAG#v}"
 
 # Construct download URL
-DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/kiterunner_${VERSION}_${PLATFORM}.tar.gz"
+DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/${APP_NAME}_${VERSION}_${PLATFORM}.tar.gz"
 
 # Create install directory if it doesn't exist
 mkdir -p "${INSTALL_DIR}"
@@ -55,9 +56,9 @@ if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
     fi
 fi
 
-# Download and extract kr binary directly to install directory
+# Download and extract lazydocker binary directly to install directory
 curl -fsSL "${DOWNLOAD_URL}" | tar -xz -C "${INSTALL_DIR}" "${APP_NAME}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
-echo "Kiterunner ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
+echo "lazydocker ${LATEST_TAG} installed to ${INSTALL_DIR}/${APP_NAME}"
