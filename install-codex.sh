@@ -11,15 +11,15 @@ ARCH="$(uname -m)"
 case "${OS}" in
   Linux)
     case "${ARCH}" in
-      x86_64)  TARGET="x86_64-unknown-linux-musl" ;;
-      aarch64) TARGET="aarch64-unknown-linux-musl" ;;
+      x86_64)  PLATFORM="x86_64-unknown-linux-musl" ;;
+      aarch64) PLATFORM="aarch64-unknown-linux-musl" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
   Darwin)
     case "${ARCH}" in
-      x86_64)  TARGET="x86_64-apple-darwin" ;;
-      arm64)   TARGET="aarch64-apple-darwin" ;;
+      x86_64)  PLATFORM="x86_64-apple-darwin" ;;
+      arm64)   PLATFORM="aarch64-apple-darwin" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
@@ -39,7 +39,7 @@ fi
 echo "Latest version: ${LATEST_TAG}"
 
 # Construct download URL
-DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/codex-${TARGET}.tar.gz"
+DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/codex-${PLATFORM}.tar.gz"
 
 # Create install directory if it doesn't exist
 mkdir -p "${INSTALL_DIR}"
@@ -54,7 +54,7 @@ if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
 fi
 
 # Download and extract codex binary directly to install directory
-curl -fsSL "${DOWNLOAD_URL}" | tar -xzf - --transform="s/codex-${TARGET}/${APP_NAME}/" -C "${INSTALL_DIR}"
+curl -fsSL "${DOWNLOAD_URL}" | tar -xzf - --transform="s/codex-${PLATFORM}/${APP_NAME}/" -C "${INSTALL_DIR}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 

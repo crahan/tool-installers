@@ -10,15 +10,15 @@ ARCH="$(uname -m)"
 case "${OS}" in
   Linux)
     case "${ARCH}" in
-      x86_64)  DIR="amd64" ;;
-      aarch64) DIR="aarch64" ;;
+      x86_64)  PLATFORM="amd64" ;;
+      aarch64) PLATFORM="aarch64" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
   Darwin)
     case "${ARCH}" in
-      x86_64)  DIR="macos" ;;
-      arm64)   DIR="macos-aarch64" ;;
+      x86_64)  PLATFORM="macos" ;;
+      arm64)   PLATFORM="macos-aarch64" ;;
       *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;;
     esac
     ;;
@@ -28,7 +28,7 @@ esac
 echo "Installing ClickHouse..."
 
 # Construct download URL
-DOWNLOAD_URL="https://builds.clickhouse.com/master/${DIR}/clickhouse"
+DOWNLOAD_URL="https://builds.clickhouse.com/master/${PLATFORM}/clickhouse"
 
 # Create install directory if it doesn't exist
 mkdir -p "${INSTALL_DIR}"
