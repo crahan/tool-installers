@@ -27,6 +27,7 @@ echo "Creating wrapper script at ${BIN_DIR}/${APP_NAME}..."
 cat > "${BIN_DIR}/${APP_NAME}" <<WRAPPER
 #!/usr/bin/env bash
 exec uv run \\
+  --python 3.11 \\
   --no-project \\
   --with-requirements "${CLONE_PATH}/requirements.txt" \\
   "${CLONE_PATH}/jwt_tool.py" \\
