@@ -2,8 +2,9 @@
 set -euo pipefail
 
 APP_NAME="aws"
-INSTALL_DIR="${1:-${HOME}/.local/bin}"
-OPT_DIR="${HOME}/.local/opt"
+OPT_DIR="${1:-${HOME}/.local/opt}"
+BIN_DIR="${2:-${HOME}/.local/bin}"
+INSTALL_DIR="${OPT_DIR}/aws-cli"
 
 ARCH="$(uname -m)"
 
@@ -16,27 +17,23 @@ esac
 echo "Installing AWS CLI v2..."
 
 # Create directories if they don't exist
-mkdir -p "${INSTALL_DIR}"
-mkdir -p "${OPT_DIR}"
+mkdir -p "${OPT_DIR}" "${BIN_DIR}"
 
 # Check if binary already exists
-if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
-    read -r -p "${INSTALL_DIR}/${APP_NAME} already exists. Overwrite? [y/N] " confirm
+if [ -f "${BIN_DIR}/${APP_NAME}" ]; then
+    read -r -p "${BIN_DIR}/${APP_NAME} already exists. Overwrite? [y/N] " confirm
     if [[ ! "${confirm}" =~ ^[Yy]$ ]]; then
         echo "Aborted."
         exit 0
     fi
 fi
 
-TMPDIR="$(mktemp -d)"
-curl -fsSL "${DOWNLOAD_URL}" -o "${TMPDIR}/awscliv2.zip"
-unzip -qo "${TMPDIR}/awscliv2.zip" -d "${TMPDIR}"
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "${TMP_DIR}"' EXIT
+curl -fsSL "${DOWNLOAD_URL}" -o "${TMP_DIR}/awscliv2.zip"
+unzip -qo "${TMP_DIR}/awscliv2.zip" -d "${TMP_DIR}"
 
-if [ -d "${OPT_DIR}/aws-cli" ]; then
-    "${TMPDIR}/aws/install" -i "${OPT_DIR}/aws-cli" -b "${INSTALL_DIR}" --install > /dev/null
-else
-    "${TMPDIR}/aws/install" -i "${OPT_DIR}/aws-cli" -b "${INSTALL_DIR}" > /dev/null
-fi
-rm -rf "${TMPDIR}"
+# --update is only checked when an existing installation is found, so it is safe on a first install
+"${TMP_DIR}/aws/install" -i "${INSTALL_DIR}" -b "${BIN_DIR}" --update > /dev/null
 
-echo "AWS CLI installed to ${INSTALL_DIR}/${APP_NAME}"
+echo "AWS CLI installed to ${BIN_DIR}/${APP_NAME}"

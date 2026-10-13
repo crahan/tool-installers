@@ -59,10 +59,10 @@ fi
 if [ "${EXT}" = "tar.gz" ]; then
     curl -fsSL "${DOWNLOAD_URL}" | tar -xz -C "${INSTALL_DIR}" "${APP_NAME}"
 else
-    TMPFILE="$(mktemp)"
-    curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-    unzip -o -j -q "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
-    rm -f "${TMPFILE}"
+    TMP_FILE="$(mktemp)"
+    trap 'rm -f "${TMP_FILE}"' EXIT
+    curl -fsSL "${DOWNLOAD_URL}" -o "${TMP_FILE}"
+    unzip -o -j -q "${TMP_FILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
 fi
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"

@@ -54,10 +54,10 @@ if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
 fi
 
 # Download and extract bun binary directly to install directory
-TMPFILE="$(mktemp)"
-curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-unzip -o -j -q "${TMPFILE}" "bun-${PLATFORM}/${APP_NAME}" -d "${INSTALL_DIR}"
-rm -f "${TMPFILE}"
+TMP_FILE="$(mktemp)"
+trap 'rm -f "${TMP_FILE}"' EXIT
+curl -fsSL "${DOWNLOAD_URL}" -o "${TMP_FILE}"
+unzip -o -j -q "${TMP_FILE}" "bun-${PLATFORM}/${APP_NAME}" -d "${INSTALL_DIR}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 

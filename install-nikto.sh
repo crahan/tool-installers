@@ -3,10 +3,9 @@ set -euo pipefail
 
 APP_NAME="nikto"
 REPO="sullo/nikto"
-
 OPT_DIR="${1:-${HOME}/.local/opt}"
 BIN_DIR="${2:-${HOME}/.local/bin}"
-CLONE_PATH="${OPT_DIR}/nikto"
+INSTALL_DIR="${OPT_DIR}/nikto"
 
 echo "Installing ${APP_NAME} from ${REPO}..."
 
@@ -20,16 +19,16 @@ fi
 mkdir -p "${OPT_DIR}" "${BIN_DIR}"
 
 # Clone or update the repository
-if [ -d "${CLONE_PATH}/.git" ]; then
+if [ -d "${INSTALL_DIR}/.git" ]; then
     echo "Repository already cloned. Updating..."
-    git -C "${CLONE_PATH}" pull --ff-only
+    git -C "${INSTALL_DIR}" pull --ff-only
 else
-    echo "Cloning ${REPO} to ${CLONE_PATH}..."
-    git clone "https://github.com/${REPO}.git" "${CLONE_PATH}"
+    echo "Cloning ${REPO} to ${INSTALL_DIR}..."
+    git clone "https://github.com/${REPO}.git" "${INSTALL_DIR}"
 fi
 
 # Symlink nikto.pl to the bin directory
 echo "Creating symlink at ${BIN_DIR}/${APP_NAME}..."
-ln -sf "${CLONE_PATH}/program/nikto.pl" "${BIN_DIR}/${APP_NAME}"
+ln -sf "${INSTALL_DIR}/program/nikto.pl" "${BIN_DIR}/${APP_NAME}"
 
 echo "Nikto installed to ${BIN_DIR}/${APP_NAME}"

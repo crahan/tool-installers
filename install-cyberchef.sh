@@ -3,7 +3,8 @@ set -euo pipefail
 
 APP_NAME="CyberChef"
 REPO="gchq/CyberChef"
-INSTALL_DIR="${1:-${HOME}/.local/opt}"
+OPT_DIR="${1:-${HOME}/.local/opt}"
+INSTALL_DIR="${OPT_DIR}/${APP_NAME}"
 
 echo "Installing CyberChef from ${REPO}..."
 
@@ -19,31 +20,30 @@ echo "Latest version: ${LATEST_TAG}"
 
 CYBERCHEF_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/${APP_NAME}_${LATEST_TAG}.zip"
 ARCHIVE_NAME=$(basename "${CYBERCHEF_URL}")
-CYBERCHEF_DIR="${INSTALL_DIR}/${APP_NAME}"
 
-# Create install directory if it doesn't exist
-mkdir -p "${INSTALL_DIR}"
+# Create opt directory if it doesn't exist
+mkdir -p "${OPT_DIR}"
 
 # Check if the directory already exists and ask to overwrite
-if [ -d "${CYBERCHEF_DIR}" ]; then
-    read -r -p "${CYBERCHEF_DIR} already exists. Overwrite? [y/N] " confirm
+if [ -d "${INSTALL_DIR}" ]; then
+    read -r -p "${INSTALL_DIR} already exists. Overwrite? [y/N] " confirm
     if [[ ! "${confirm}" =~ ^[Yy]$ ]]; then
         echo "Aborted."
         exit 0
     fi
-    rm -rf "${CYBERCHEF_DIR}"
 fi
 
-# Download and extract the latest version of CyberChef
-curl -fsSL -o "${INSTALL_DIR}/${ARCHIVE_NAME}" "${CYBERCHEF_URL}"
+# Download the archive to a temporary directory
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "${TMP_DIR}"' EXIT
+curl -fsSL -o "${TMP_DIR}/${ARCHIVE_NAME}" "${CYBERCHEF_URL}"
 
-# Unpack the archive
-unzip -q "${INSTALL_DIR}/${ARCHIVE_NAME}" -d "${CYBERCHEF_DIR}"
+# Replace the existing installation with the new version
+rm -rf "${INSTALL_DIR}"
+mkdir -p "${INSTALL_DIR}"
+unzip -q "${TMP_DIR}/${ARCHIVE_NAME}" -d "${INSTALL_DIR}"
 
 # Create a relative symlink to the CyberChef HTML file
-(cd "${CYBERCHEF_DIR}" && ln -sf CyberChef_v*.html CyberChef.html)
+(cd "${INSTALL_DIR}" && ln -sf CyberChef_v*.html CyberChef.html)
 
-# Delete the downloaded archive
-rm "${INSTALL_DIR}/${ARCHIVE_NAME}"
-
-echo "CyberChef ${LATEST_TAG} installed to ${CYBERCHEF_DIR}"
+echo "CyberChef ${LATEST_TAG} installed to ${INSTALL_DIR}"

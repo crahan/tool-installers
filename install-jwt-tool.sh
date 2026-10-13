@@ -3,10 +3,9 @@ set -euo pipefail
 
 APP_NAME="jwt-tool"
 REPO="ticarpi/jwt_tool"
-
 OPT_DIR="${1:-${HOME}/.local/opt}"
 BIN_DIR="${2:-${HOME}/.local/bin}"
-CLONE_PATH="${OPT_DIR}/jwt_tool"
+INSTALL_DIR="${OPT_DIR}/jwt_tool"
 
 echo "Installing ${APP_NAME} from ${REPO}..."
 
@@ -14,12 +13,12 @@ echo "Installing ${APP_NAME} from ${REPO}..."
 mkdir -p "${OPT_DIR}" "${BIN_DIR}"
 
 # Clone or update the repository
-if [ -d "${CLONE_PATH}/.git" ]; then
+if [ -d "${INSTALL_DIR}/.git" ]; then
     echo "Repository already cloned. Updating..."
-    git -C "${CLONE_PATH}" pull --ff-only
+    git -C "${INSTALL_DIR}" pull --ff-only
 else
-    echo "Cloning ${REPO} to ${CLONE_PATH}..."
-    git clone "https://github.com/${REPO}.git" "${CLONE_PATH}"
+    echo "Cloning ${REPO} to ${INSTALL_DIR}..."
+    git clone "https://github.com/${REPO}.git" "${INSTALL_DIR}"
 fi
 
 # Create wrapper script to run via uv
@@ -29,8 +28,8 @@ cat > "${BIN_DIR}/${APP_NAME}" <<WRAPPER
 exec uv run \\
   --python 3.11 \\
   --no-project \\
-  --with-requirements "${CLONE_PATH}/requirements.txt" \\
-  "${CLONE_PATH}/jwt_tool.py" \\
+  --with-requirements "${INSTALL_DIR}/requirements.txt" \\
+  "${INSTALL_DIR}/jwt_tool.py" \\
   "\$@"
 WRAPPER
 chmod +x "${BIN_DIR}/${APP_NAME}"

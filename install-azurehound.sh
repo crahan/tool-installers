@@ -54,10 +54,10 @@ if [ -f "${INSTALL_DIR}/${APP_NAME}" ]; then
 fi
 
 # Download and extract azurehound binary directly to install directory
-TMPFILE="$(mktemp)"
-curl -fsSL "${DOWNLOAD_URL}" -o "${TMPFILE}"
-unzip -o -j -q "${TMPFILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
-rm -f "${TMPFILE}"
+TMP_FILE="$(mktemp)"
+trap 'rm -f "${TMP_FILE}"' EXIT
+curl -fsSL "${DOWNLOAD_URL}" -o "${TMP_FILE}"
+unzip -o -j -q "${TMP_FILE}" "${APP_NAME}" -d "${INSTALL_DIR}"
 
 chmod +x "${INSTALL_DIR}/${APP_NAME}"
 
